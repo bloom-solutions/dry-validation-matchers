@@ -21,9 +21,22 @@ module Dry::Validation::Matchers
 
     def description
       @desc = []
-      @desc << "validate attribute `#{@attr}` is #{@acceptance}"
-      @desc << "must be filled with #{@type}" if @check_filled
-      @desc.to_sentence
+      @desc << "validation for #{@acceptance} `#{@attr}`"
+      @desc << " ("
+      @desc << "filled with #{@type}" if @check_filled
+      @desc << ")"
+      @desc << " exists"
+      @desc.join
+    end
+
+    def failure_message
+      @desc = []
+      @desc << "validation for #{@acceptance} `#{@attr}`"
+      @desc << " ("
+      @desc << "filled with #{@type}" if @check_filled
+      @desc << ")"
+      @desc << " is lacking"
+      @desc.join
     end
 
     def matches?(schema_or_schema_class)

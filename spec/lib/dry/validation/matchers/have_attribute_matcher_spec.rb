@@ -92,5 +92,21 @@ module Dry::Validation::Matchers
       end
     end
 
+    describe "#description" do
+      it "gives an apt description of passing spec" do
+        matcher = described_class.new(:email, :optional).filled(:str)
+        expect(matcher.description).
+          to eq "validation for optional `email` (filled with str) exists"
+      end
+    end
+
+    describe "#failure_message" do
+      it "gives enough clues to the developer" do
+        matcher = described_class.new(:email, :required).filled(:int)
+        expect(matcher.failure_message).
+          to eq "validation for required `email` (filled with int) is lacking"
+      end
+    end
+
   end
 end
