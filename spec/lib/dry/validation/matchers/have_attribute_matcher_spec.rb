@@ -12,6 +12,14 @@ module Dry::Validation::Matchers
           required(:last_name).filled(:str?)
           optional(:mobile).filled
           optional(:email)
+          optional(:height).filled(:float?)
+          optional(:weight).filled(:decimal?)
+          optional(:active).filled(:bool?)
+          optional(:born_on).filled(:date?)
+          optional(:dismissed_at).filled(:time?)
+          optional(:born_at).filled(:date_time?)
+          required(:pets).filled(:array?)
+          required(:other).filled(:hash?)
         end
       end
     end
@@ -26,32 +34,6 @@ module Dry::Validation::Matchers
       end
     end
 
-    context "attribute is required", "checking `filled`" do
-      it "matches" do
-        matcher = described_class.new(:first_name, :required).filled
-        expect(matcher.matches?(schema_class)).to be false
-
-        matcher = described_class.new(:username, :required).filled
-        expect(matcher.matches?(schema_class)).to be true
-      end
-    end
-
-    context "attribute is required", "checking `filled` type" do
-      it "matches" do
-        matcher = described_class.new(:username, :required).filled(:str)
-        expect(matcher.matches?(schema_class)).to be true
-
-        matcher = described_class.new(:age, :required).filled(:str)
-        expect(matcher.matches?(schema_class)).to be false
-
-        matcher = described_class.new(:age, :required).filled(:int)
-        expect(matcher.matches?(schema_class)).to be true
-
-        matcher = described_class.new(:last_name, :required).filled(:int)
-        expect(matcher.matches?(schema_class)).to be false
-      end
-    end
-
     context "attribute is optional" do
       it "matches" do
         matcher = described_class.new(:mobile, :optional)
@@ -62,23 +44,117 @@ module Dry::Validation::Matchers
       end
     end
 
-    context "attribute is optional", "checking `filled` type" do
+    context "checking `filled` type that is more specific than rule" do
       it "matches" do
-        matcher = described_class.new(:last_name, :optional).filled
-        expect(matcher.matches?(schema_class)).to be false
-
-        matcher = described_class.new(:email, :optional).filled
-        expect(matcher.matches?(schema_class)).to be false
-
-        matcher = described_class.new(:email, :optional)
+        matcher = described_class.new(:mobile, :optional).filled(:int)
         expect(matcher.matches?(schema_class)).to be true
       end
     end
 
-    context "attribute is optional", "checking `filled` type that is more specific than rule" do
+    context "checking `filled`" do
       it "matches" do
-        matcher = described_class.new(:mobile, :optional).filled(:int)
+        matcher = described_class.new(:first_name, :required).filled
+        expect(matcher.matches?(schema_class)).to be false
+
+        matcher = described_class.new(:username, :required).filled
         expect(matcher.matches?(schema_class)).to be true
+      end
+    end
+
+    context "checking `filled` type `str`" do
+      it "matches" do
+        matcher = described_class.new(:username, :required).filled(:str)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:age, :required).filled(:str)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `int`" do
+      it "matches" do
+        matcher = described_class.new(:age, :required).filled(:int)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:last_name, :required).filled(:int)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `float`" do
+      it "matches" do
+        matcher = described_class.new(:email, :optional).filled(:float)
+        expect(matcher.matches?(schema_class)).to be false
+
+        matcher = described_class.new(:height, :optional).filled(:float)
+        expect(matcher.matches?(schema_class)).to be true
+      end
+    end
+
+    context "checking `filled` type `decimal`" do
+      it "matches" do
+        matcher = described_class.new(:weight, :optional).filled(:decimal)
+        expect(matcher.matches?(schema_class)).to be true
+      end
+    end
+
+    context "checking `filled` type `bool`" do
+      it "matches" do
+        matcher = described_class.new(:active, :optional).filled(:bool)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:weight, :optional).filled(:bool)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `date`" do
+      it "matches" do
+        matcher = described_class.new(:born_on, :optional).filled(:date)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:height, :optional).filled(:date)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `time`" do
+      it "matches" do
+        matcher = described_class.new(:dismissed_at, :optional).filled(:time)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:last_name, :required).filled(:time)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `date_time`" do
+      it "matches" do
+        matcher = described_class.new(:dismissed_at, :optional).filled(:date_time)
+        expect(matcher.matches?(schema_class)).to be false
+
+        matcher = described_class.new(:born_at, :optional).filled(:date_time)
+        expect(matcher.matches?(schema_class)).to be true
+      end
+    end
+
+    context "checking `filled` type `array`" do
+      it "matches" do
+        matcher = described_class.new(:pets, :required).filled(:array)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:dismissed_at, :optional).filled(:array)
+        expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking `filled` type `hash`" do
+      it "matches" do
+        matcher = described_class.new(:other, :required).filled(:hash)
+        expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:born_at, :optional).filled(:hash)
+        expect(matcher.matches?(schema_class)).to be false
       end
     end
 

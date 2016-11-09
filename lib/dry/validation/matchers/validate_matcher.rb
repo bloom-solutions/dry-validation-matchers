@@ -11,6 +11,38 @@ module Dry::Validation::Matchers
         test_value: 43,
         message: "must be an integer",
       },
+      float: {
+        test_value: 41.5,
+        message: "must be a float",
+      },
+      decimal: {
+        test_value: BigDecimal.new("41.5"),
+        message: "must be a decimal",
+      },
+      bool: {
+        test_value: false,
+        message: "must be a boolean",
+      },
+      date: {
+        test_value: Date.new(2011, 1, 2),
+        message: "must be a date",
+      },
+      time: {
+        test_value: Time.new(2011, 1, 2, 2, 33),
+        message: "must be a time",
+      },
+      date_time: {
+        test_value: DateTime.new(2011, 5, 1, 2, 3, 4),
+        message: "must be a date_time",
+      },
+      array: {
+        test_value: [1, 3, 5],
+        message: "must be a array",
+      },
+      hash: {
+        test_value: {hello: "there"},
+        message: "must be a hash",
+      },
     }
 
     def initialize(attr, acceptance)
