@@ -49,6 +49,7 @@ module Dry::Validation::Matchers
       @attr = attr
       @acceptance = acceptance
       @type = DEFAULT_TYPE
+      @value_rules = []
     end
 
     def description
@@ -87,12 +88,18 @@ module Dry::Validation::Matchers
 
       check_required_or_optional!(schema) &&
         check_filled!(schema) &&
-        check_filled_with_type!(schema)
+        check_filled_with_type!(schema) &&
+        check_value!(schema)
     end
 
     def filled(type=:str)
       @check_filled = true
       @type = type
+      self
+    end
+
+    def value(value_rules)
+      @value_rules = value_rules
       self
     end
 
@@ -129,6 +136,33 @@ module Dry::Validation::Matchers
       allowed_errors = [TYPE_ERRORS[@type][:message]] & error_messages
       unallowed_errors = error_messages - allowed_errors
       unallowed_errors.empty?
+    end
+
+    def check_value!(schema)
+      @value_rules.map do |rule|
+        method_name = :"check_value_#{rule[0]}!"
+        return true if !self.class.private_method_defined?(method_name)
+        send(method_name, schema, rule)
+      end.none? {|result| result == false}
+    end
+
+    def check_value_included_in!(schema, rule)
+      predicate = rule[0]
+      allowed_values = rule[1]
+
+      invalid_for_expected_values = allowed_values.map do |v|
+        result = schema.(@attr => v)
+        error_messages = result.errors[@attr]
+        error_messages.present? && error_messages.grep(/must be one of/).any?
+      end.all? {|result| result == true}
+      return false if invalid_for_expected_values
+
+      value_outside_required = allowed_values.sample.to_s + SecureRandom.hex(2)
+      result = schema.(@attr => value_outside_required)
+      error_messages = result.errors[@attr]
+      return false if error_messages.nil?
+      return true if error_messages.grep(/must be one of/).any?
+      false
     end
 
   end

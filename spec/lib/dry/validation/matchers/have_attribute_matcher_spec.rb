@@ -20,6 +20,7 @@ module Dry::Validation::Matchers
           optional(:born_at).filled(:date_time?)
           required(:pets).filled(:array?)
           required(:other).filled(:hash?)
+          optional(:hair_color).filled(:str?, included_in?: %w(blue orange))
         end
       end
     end
@@ -155,6 +156,18 @@ module Dry::Validation::Matchers
 
         matcher = described_class.new(:born_at, :optional).filled(:hash)
         expect(matcher.matches?(schema_class)).to be false
+      end
+    end
+
+    context "checking value `included_in`" do
+      it "matches" do
+        matcher = described_class.new(:hair_color, :optional).
+          value(included_in: %w(white green))
+        expect(matcher.matches?(schema_class)).to be false
+
+        matcher = described_class.new(:hair_color, :optional).
+          value(included_in: %w(orange blue))
+        expect(matcher.matches?(schema_class)).to be true
       end
     end
 
