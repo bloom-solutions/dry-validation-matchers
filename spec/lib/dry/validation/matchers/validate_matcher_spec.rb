@@ -41,7 +41,7 @@ module Dry::Validation::Matchers
           matcher = described_class.new(:email, :optional)
           matcher.matches?(schema_class)
           expect(matcher.description).
-            to eq "validation for optional `email` exists"
+            to eq "validate for optional `email` exists"
         end
       end
     end
@@ -52,7 +52,7 @@ module Dry::Validation::Matchers
           matcher = described_class.new(:asd, :required)
           matcher.matches?(schema_class)
           expect(matcher.failure_message).
-            to eq "validation for required `asd` is lacking"
+            to eq "be missing validation for required `asd`"
         end
       end
     end
@@ -215,7 +215,7 @@ module Dry::Validation::Matchers
       it "gives an apt description of passing spec" do
         matcher = described_class.new(:email, :optional).filled(:str)
         expect(matcher.description).
-          to eq "validation for optional `email` (filled with str) exists"
+          to eq "validate for optional `email` (filled with str) exists"
       end
     end
 
@@ -223,7 +223,7 @@ module Dry::Validation::Matchers
       it "gives enough clues to the developer" do
         matcher = described_class.new(:email, :required).filled(:int)
         expect(matcher.failure_message).
-          to eq "validation for required `email` (filled with int) is lacking"
+          to eq "be missing validation for required `email` (filled with int)"
       end
     end
 

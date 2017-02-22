@@ -54,7 +54,7 @@ module Dry::Validation::Matchers
 
     def description
       @desc = []
-      @desc << "validation for #{@acceptance} `#{@attr}`"
+      @desc << "validate for #{@acceptance} `#{@attr}`"
 
       validation_details_message = []
       validation_details_message << "filled with #{@type}" if @check_filled
@@ -71,7 +71,7 @@ module Dry::Validation::Matchers
 
     def failure_message
       @desc = []
-      @desc << "validation for #{@acceptance} `#{@attr}`"
+      @desc << "be missing validation for #{@acceptance} `#{@attr}`"
 
       validation_details_message = []
       validation_details_message << "filled with #{@type}" if @check_filled
@@ -82,7 +82,6 @@ module Dry::Validation::Matchers
         @desc << ")"
       end
 
-      @desc << " is lacking"
       @desc.join
     end
 
