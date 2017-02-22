@@ -124,6 +124,8 @@ module Dry::Validation::Matchers
       when :required
         result = schema.({})
         error_messages = result.errors[@attr]
+        # NOTE should support required to specify but not fillup. Must wait for
+        # https://github.com/dry-rb/dry-validation/issues/251
         error_messages.present? && error_messages.include?("is missing")
       else
         result = schema.({})

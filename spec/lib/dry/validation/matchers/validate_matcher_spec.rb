@@ -74,6 +74,14 @@ module Dry::Validation::Matchers
       end
     end
 
+    context "checking `required` only" do
+      it "matches" do
+        pending
+        matcher = described_class.new(:first_name, :required)
+        expect(matcher.matches?(schema_class)).to be true
+      end
+    end
+
     context "checking `filled`" do
       it "matches" do
         matcher = described_class.new(:first_name, :required).filled
