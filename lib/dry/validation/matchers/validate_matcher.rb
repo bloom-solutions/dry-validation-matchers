@@ -55,9 +55,16 @@ module Dry::Validation::Matchers
     def description
       @desc = []
       @desc << "validation for #{@acceptance} `#{@attr}`"
-      @desc << " ("
-      @desc << "filled with #{@type}" if @check_filled
-      @desc << ")"
+
+      validation_details_message = []
+      validation_details_message << "filled with #{@type}" if @check_filled
+
+      unless validation_details_message.empty?
+        @desc << " ("
+        @desc << validation_details_message.join("; ")
+        @desc << ")"
+      end
+
       @desc << " exists"
       @desc.join
     end

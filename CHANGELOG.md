@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- Description message does not leave artifacts if there are no details
+
 ## [0.4.0] - 2016-11-10
 ### Added
 - Add support for checking that the value is included_in

@@ -35,6 +35,17 @@ module Dry::Validation::Matchers
       end
     end
 
+    describe "passing message details" do
+      context "there are no details" do
+        it "does not pollute the sentence with artifacts" do
+          matcher = described_class.new(:email, :optional)
+          matcher.matches?(schema_class)
+          expect(matcher.description).
+            to eq "validation for optional `email` exists"
+        end
+      end
+    end
+
     context "attribute is optional" do
       it "matches" do
         matcher = described_class.new(:mobile, :optional)
