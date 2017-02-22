@@ -31,6 +31,7 @@ RSpec.describe "SomeSchema class", type: [:dry_validation]
         required(:first_name)
         required(:age).filled(:int?)
         required(:last_name).filled(:str?)
+        required(:rank).value(included_in?: %w(sarge chief))
         optional(:mobile).filled
         optional(:email)
       end
@@ -40,6 +41,7 @@ RSpec.describe "SomeSchema class", type: [:dry_validation]
   it { is_expected.to validate(:username, :required).filled }
   it { is_expected.to validate(:mobile, :optional).filled }
   it { is_expected.to validate(:email, :optional) }
+  it { is_expected.to validate(:rank, :optional).value(included_in: %w(sarge chief)) }
 end
 ```
 
