@@ -46,6 +46,17 @@ module Dry::Validation::Matchers
       end
     end
 
+    describe "failing message details" do
+      context "there are no details" do
+        it "does not pollute the sentence with artifacts" do
+          matcher = described_class.new(:asd, :required)
+          matcher.matches?(schema_class)
+          expect(matcher.failure_message).
+            to eq "validation for required `asd` is lacking"
+        end
+      end
+    end
+
     context "attribute is optional" do
       it "matches" do
         matcher = described_class.new(:mobile, :optional)

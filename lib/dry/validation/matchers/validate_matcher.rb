@@ -72,9 +72,16 @@ module Dry::Validation::Matchers
     def failure_message
       @desc = []
       @desc << "validation for #{@acceptance} `#{@attr}`"
-      @desc << " ("
-      @desc << "filled with #{@type}" if @check_filled
-      @desc << ")"
+
+      validation_details_message = []
+      validation_details_message << "filled with #{@type}" if @check_filled
+
+      unless validation_details_message.empty?
+        @desc << " ("
+        @desc << validation_details_message.join("; ")
+        @desc << ")"
+      end
+
       @desc << " is lacking"
       @desc.join
     end
