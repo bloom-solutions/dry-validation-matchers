@@ -1,5 +1,6 @@
 require "active_support/core_ext/object"
 require "active_support/core_ext/object/blank"
+require "securerandom"
 require "dry-validation"
 require "dry/validation/matchers/version"
 require "dry/validation/matchers/validate_matcher"
