@@ -33,7 +33,7 @@ module Dry::Validation::Matchers
       },
       date_time: {
         test_value: DateTime.new(2011, 5, 1, 2, 3, 4),
-        message: "must be a date_time",
+        message: "must be a date time",
       },
       array: {
         test_value: [1, 3, 5],
