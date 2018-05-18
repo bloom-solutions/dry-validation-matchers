@@ -1,6 +1,6 @@
 # Dry::Validation::Matchers
 
-[![Build Status](https://travis-ci.org/imacchiato/dry-validation-matchers.svg?branch=master)](https://travis-ci.org/imacchiato/dry-validation-matchers)
+[![Build Status](https://travis-ci.org/bloom-solutions/dry-validation-matchers.svg?branch=master)](https://travis-ci.org/bloom-solutions/dry-validation-matchers)
 
 RSpec matchers for [Dry::Validation](dry-rb.org/gems/dry-validation).
 
@@ -55,7 +55,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/imacchiato/dry-validation-matchers. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/bloom-solutions/dry-validation-matchers. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
