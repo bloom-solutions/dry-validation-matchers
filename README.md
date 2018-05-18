@@ -1,6 +1,6 @@
 # Dry::Validation::Matchers
 
-[![Build Status](https://travis-ci.org/imacchiato/dry-validation-matchers.svg?branch=master)](https://travis-ci.org/imacchiato/dry-validation-matchers)
+[![Build Status](https://travis-ci.org/bloom-solutions/dry-validation-matchers.svg?branch=master)](https://travis-ci.org/bloom-solutions/dry-validation-matchers)
 
 RSpec matchers for [Dry::Validation](dry-rb.org/gems/dry-validation).
 
