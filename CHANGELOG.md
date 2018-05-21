@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Fixed
+- Fix gemspec dependencies context
 - Description messages for pass and fail do not leave artifacts if there are no details
 - Make messages consistent with "Subject predicate noun"
 
