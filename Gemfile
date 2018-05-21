@@ -3,5 +3,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in dry-validation-matchers.gemspec
 gemspec
 
-gem "pry"
-gem "pry-byebug"
+group :development, :test do
+  gem "pry"
+  gem "pry-byebug"
+  gem 'simplecov', '~> 0.16'
+end
