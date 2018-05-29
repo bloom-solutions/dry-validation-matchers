@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix date_time type error message
 - Fix false positive checks missmatch between type check and other checks
+- Fix gemspec dependencies context
+- Fix warning on @check_filled
 - Description messages for pass and fail do not leave artifacts if there are no details
 - Make messages consistent with "Subject predicate noun"
 

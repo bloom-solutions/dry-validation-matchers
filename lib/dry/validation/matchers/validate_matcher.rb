@@ -50,6 +50,7 @@ module Dry::Validation::Matchers
       @acceptance = acceptance
       @type = DEFAULT_TYPE
       @value_rules = []
+      @check_filled = false
     end
 
     def description
