@@ -33,7 +33,7 @@ module Dry::Validation::Matchers
       },
       date_time: {
         test_value: DateTime.new(2011, 5, 1, 2, 3, 4),
-        message: "must be a date_time",
+        message: "must be a date time",
       },
       array: {
         test_value: [1, 3, 5],
@@ -149,9 +149,12 @@ module Dry::Validation::Matchers
       result = schema.(@attr => TYPE_ERRORS[@type][:test_value])
       error_messages = result.errors[@attr]
       return true if error_messages.nil?
-      allowed_errors = [TYPE_ERRORS[@type][:message]] & error_messages
-      unallowed_errors = error_messages - allowed_errors
-      unallowed_errors.empty?
+      # Message not allowed are all the type_error_messages that are not the
+      # expected type. Any other message is accepted (like "size cannot be less than 20")
+      unallowed_errors = type_error_messages - [TYPE_ERRORS[@type][:message]]
+      # We check if error_messages intersect with the unallowed_errors.
+      # if intersection is empty, then the check is passed.
+      (error_messages & unallowed_errors).empty?
     end
 
     def check_value!(schema)
@@ -181,5 +184,12 @@ module Dry::Validation::Matchers
       false
     end
 
+    def type_error_messages
+      type_error_messages = []
+      TYPE_ERRORS.each_pair do |type, hash|
+        type_error_messages << hash[:message]
+      end
+      type_error_messages
+    end
   end
 end

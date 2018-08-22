@@ -6,7 +6,7 @@ module Dry::Validation::Matchers
     let(:schema_class) do
       Class.new(Dry::Validation::Schema) do
         define! do
-          required(:username).filled
+          required(:username).filled(:str?, min_size?: 20)
           required(:first_name)
           required(:age).filled(:int?)
           required(:last_name).filled(:str?)
