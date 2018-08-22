@@ -198,6 +198,10 @@ module Dry::Validation::Matchers
         matcher = described_class.new(:hair_color, :optional).
           value(included_in: %w(orange blue))
         expect(matcher.matches?(schema_class)).to be true
+
+        matcher = described_class.new(:hair_color, :optional).
+          value(included_in: %w(orange blue white))
+        expect(matcher.matches?(schema_class)).to be false
       end
     end
 
