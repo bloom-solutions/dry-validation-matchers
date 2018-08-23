@@ -173,7 +173,7 @@ module Dry::Validation::Matchers
         result = schema.(@attr => v)
         error_messages = result.errors[@attr]
         error_messages.present? && error_messages.grep(/must be one of/).any?
-      end.all? {|result| result == true}
+      end.any? {|result| result == true}
       return false if invalid_for_expected_values
 
       value_outside_required = allowed_values.sample.to_s + SecureRandom.hex(2)
