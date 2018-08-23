@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.4.2] - 2018-08-23
 ### Fixed
 - [Fix false positive on value(included_in:) matcher](https://github.com/bloom-solutions/dry-validation-matchers/pull/10)
 
