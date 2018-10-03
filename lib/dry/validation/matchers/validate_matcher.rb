@@ -126,7 +126,7 @@ module Dry::Validation::Matchers
         error_messages = result.errors[@attr]
         # NOTE should support required to specify but not fillup. Must wait for
         # https://github.com/dry-rb/dry-validation/issues/251
-        error_messages.present? && error_messages.include?("is missing")
+        error_messages.respond_to?('each') && error_messages.include?("is missing")
       else
         result = schema.({})
         result.errors[@attr].nil?
@@ -172,7 +172,7 @@ module Dry::Validation::Matchers
       invalid_for_expected_values = allowed_values.map do |v|
         result = schema.(@attr => v)
         error_messages = result.errors[@attr]
-        error_messages.present? && error_messages.grep(/must be one of/).any?
+        error_messages.respond_to?('each') && error_messages.grep(/must be one of/).any?
       end.any? {|result| result == true}
       return false if invalid_for_expected_values
 
