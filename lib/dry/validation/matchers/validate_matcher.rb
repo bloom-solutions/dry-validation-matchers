@@ -184,6 +184,25 @@ module Dry::Validation::Matchers
       false
     end
 
+    def check_value_max_size!(schema, rule)
+      predicate = rule[0]
+      max_size = rule[1]
+
+      expected_error_message = "size cannot be greater than #{max_size}"
+
+      result = schema.(@attr => "a" * (max_size+1))
+      error_messages = result.errors[@attr]
+      error_when_over = error_messages.respond_to?('each') &&
+        error_messages.include?(expected_error_message)
+
+      result = schema.(@attr => "a" * (max_size))
+      error_messages = result.errors[@attr]
+      no_error_when_within = error_messages.nil? ||
+        !error_messages.include?(expected_error_message)
+
+      error_when_over && no_error_when_within
+    end
+
     def type_error_messages
       type_error_messages = []
       TYPE_ERRORS.each_pair do |type, hash|
