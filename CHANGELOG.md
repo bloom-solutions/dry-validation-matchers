@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Remove (I know, under "added") activesupport requirement
+- Add `max_size` validation
 
 ## [0.4.2] - 2018-08-23
 ### Fixed
