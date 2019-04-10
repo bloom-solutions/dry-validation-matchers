@@ -202,7 +202,8 @@ module Dry::Validation::Matchers
 
       result = schema.(@attr => "a" * (min_size-1))
       error_messages = result.errors[@attr]
-      error_when_below = !error_messages.nil? &&
+      error_when_below = (min_size-1).zero? ||
+        !error_messages.nil? &&
         error_messages.include?(expected_error_message)
 
       no_error_when_over && no_error_when_exact && error_when_below
