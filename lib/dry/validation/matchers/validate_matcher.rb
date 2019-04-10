@@ -184,6 +184,30 @@ module Dry::Validation::Matchers
       false
     end
 
+    def check_value_min_size!(schema, rule)
+      predicate = rule[0]
+      min_size = rule[1]
+
+      expected_error_message = "size cannot be less than #{min_size}"
+
+      result = schema.(@attr => "a" * (min_size+1))
+      error_messages = result.errors[@attr]
+      no_error_when_over = error_messages.nil? ||
+        !error_messages.include?(expected_error_message)
+
+      result = schema.(@attr => "a" * (min_size))
+      error_messages = result.errors[@attr]
+      no_error_when_exact = error_messages.nil? ||
+        !error_messages.include?(expected_error_message)
+
+      result = schema.(@attr => "a" * (min_size-1))
+      error_messages = result.errors[@attr]
+      error_when_below = !error_messages.nil? &&
+        error_messages.include?(expected_error_message)
+
+      no_error_when_over && no_error_when_exact && error_when_below
+    end
+
     def check_value_max_size!(schema, rule)
       predicate = rule[0]
       max_size = rule[1]
