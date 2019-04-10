@@ -21,7 +21,7 @@ module Dry::Validation::Matchers
           required(:pets).filled(:array?)
           required(:other).filled(:hash?)
           optional(:hair_color).filled(:str?, included_in?: %w(blue orange))
-          optional(:address).value(min_size?: 2, max_size?: 10)
+          optional(:address).value(min_size?: 1, max_size?: 10)
         end
       end
     end
@@ -213,11 +213,11 @@ module Dry::Validation::Matchers
 
       matcher = described_class.new(:address, :optional).
         value(min_size: 2)
-      expect(matcher.matches?(schema_class)).to be true
+      expect(matcher.matches?(schema_class)).to be false
 
       matcher = described_class.new(:address, :optional).
         value(min_size: 1)
-      expect(matcher.matches?(schema_class)).to be false
+      expect(matcher.matches?(schema_class)).to be true
     end
 
     it "checks value against `max_size`" do
