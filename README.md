@@ -23,7 +23,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-RSpec.describe "SomeSchema class", type: [:dry_validation]
+RSpec.describe "SomeSchema class", type: [:dry_validation] do
   subject(:schema_class) do
     Class.new(Dry::Validation::Schema) do
       define! do
