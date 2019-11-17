@@ -4,8 +4,8 @@ module Dry::Validation::Matchers
   RSpec.describe ValidateMatcher do
 
     let(:schema_class) do
-      Class.new(Dry::Validation::Schema) do
-        define! do
+      Class.new(Dry::Validation::Contract) do
+        params do
           required(:username).filled(:str?, min_size?: 20)
           required(:first_name)
           required(:age).filled(:int?)
@@ -23,6 +23,19 @@ module Dry::Validation::Matchers
           optional(:hair_color).filled(:str?, included_in?: %w(blue orange))
           optional(:address).value(min_size?: 1, max_size?: 10)
         end
+
+        register_macro(:email) do
+          key.failure('must_be_a_valid_email') if value.is_a?(String) &&
+              !value.match?(/\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
+        end
+
+        register_macro(:precision) do |macro:|
+          num = macro.args[0]
+          key.failure("cant_have_more_than_#{num}_decimal_numbers") if value && value.to_s.split('.').last.size > num
+        end
+
+        rule(:email).validate(:email)
+        rule(:weight).validate(precision: 2)
       end
     end
 
@@ -77,7 +90,6 @@ module Dry::Validation::Matchers
 
     context "checking `required` only" do
       it "matches" do
-        pending
         matcher = described_class.new(:first_name, :required)
         expect(matcher.matches?(schema_class)).to be true
       end
@@ -244,11 +256,43 @@ module Dry::Validation::Matchers
       end
     end
 
+    describe '#macro_use?' do
+      context 'when have one parameter' do
+        it 'returns true when macro uses' do
+          matcher = described_class.new(:email, :optional).macro_use?(:email)
+          expect(matcher.matches?(schema_class)).to be true
+        end
+
+        it 'returns false when macro unused' do
+          matcher = described_class.new(:email, :optional).macro_use?(:wrong)
+          expect(matcher.matches?(schema_class)).to be false
+        end
+      end
+
+      context 'when have two parameters' do
+        it 'returns true when macro uses' do
+          matcher = described_class.new(:weight, :optional).macro_use?(precision: 2)
+          expect(matcher.matches?(schema_class)).to be true
+        end
+
+        it 'returns false when macro unused' do
+          matcher = described_class.new(:weight, :optional).macro_use?(precision: 3)
+          expect(matcher.matches?(schema_class)).to be false
+        end
+      end
+    end
+
     describe "#description" do
       it "gives an apt description of passing spec" do
         matcher = described_class.new(:email, :optional).filled(:str)
         expect(matcher.description).
           to eq "validate for optional `email` (filled with str) exists"
+      end
+
+      it "gives an apt description of passing macro spec" do
+        matcher = described_class.new(:weight, :optional).macro_use?(precision: 2)
+        expect(matcher.description).
+            to eq "validate for optional `weight` (macro usage `{:precision=>2}`) exists"
       end
     end
 
@@ -258,7 +302,12 @@ module Dry::Validation::Matchers
         expect(matcher.failure_message).
           to eq "be missing validation for required `email` (filled with int)"
       end
-    end
 
+      it "gives enough clues to the developer when testing macro" do
+        matcher = described_class.new(:weight, :optional).macro_use?(precision: 3)
+        expect(matcher.failure_message).
+            to eq "be missing validation for optional `weight` (macro usage `{:precision=>3}`)"
+      end
+    end
   end
 end

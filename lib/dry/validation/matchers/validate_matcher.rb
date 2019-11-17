@@ -50,7 +50,9 @@ module Dry::Validation::Matchers
       @acceptance = acceptance
       @type = DEFAULT_TYPE
       @value_rules = []
+      @macro_usage_params = []
       @check_filled = false
+      @check_macro = false
     end
 
     def description
@@ -59,6 +61,7 @@ module Dry::Validation::Matchers
 
       validation_details_message = []
       validation_details_message << "filled with #{@type}" if @check_filled
+      validation_details_message << "macro usage `#{@macro_usage_params.to_s}`" if @check_macro
 
       unless validation_details_message.empty?
         @desc << " ("
@@ -76,6 +79,7 @@ module Dry::Validation::Matchers
 
       validation_details_message = []
       validation_details_message << "filled with #{@type}" if @check_filled
+      validation_details_message << "macro usage `#{@macro_usage_params.to_s}`" if @check_macro
 
       unless validation_details_message.empty?
         @desc << " ("
@@ -87,10 +91,10 @@ module Dry::Validation::Matchers
     end
 
     def matches?(schema_or_schema_class)
-      if schema_or_schema_class.is_a?(Dry::Validation::Schema)
+      if schema_or_schema_class.is_a?(Dry::Validation::Contract)
         schema = schema_or_schema_class
       elsif schema_or_schema_class.is_a?(Class) &&
-        schema_or_schema_class.ancestors.include?(Dry::Validation::Schema)
+        schema_or_schema_class.ancestors.include?(Dry::Validation::Contract)
 
         schema = schema_or_schema_class.new
       else
@@ -103,7 +107,8 @@ module Dry::Validation::Matchers
       check_required_or_optional!(schema) &&
         check_filled!(schema) &&
         check_filled_with_type!(schema) &&
-        check_value!(schema)
+        check_value!(schema) &&
+        check_macro_usage!(schema)
     end
 
     def filled(type=:str)
@@ -114,6 +119,12 @@ module Dry::Validation::Matchers
 
     def value(value_rules)
       @value_rules = value_rules
+      self
+    end
+
+    def macro_use?(macro_params)
+      @check_macro = true
+      @macro_usage_params = macro_params
       self
     end
 
@@ -226,6 +237,29 @@ module Dry::Validation::Matchers
         !error_messages.include?(expected_error_message)
 
       error_when_over && no_error_when_within
+    end
+
+    def check_macro_usage!(schema)
+      return true if @macro_usage_params.empty?
+
+      is_present = false
+
+      schema.rules.each do |obj|
+        next if obj.keys.first != @attr
+
+        value = if @macro_usage_params.is_a?(Hash) && obj.macros.flatten.count > 1
+                  obj.macros.to_h.map { |k, v| [k, v.first] }.to_h
+                else
+                  obj.macros.flatten.first
+                end
+
+        if value == @macro_usage_params
+          is_present = true
+          break
+        end
+      end
+
+      is_present
     end
 
     def type_error_messages
