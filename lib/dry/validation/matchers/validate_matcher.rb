@@ -16,7 +16,7 @@ module Dry::Validation::Matchers
         message: "must be a float",
       },
       decimal: {
-        test_value: BigDecimal.new("41.5"),
+        test_value: BigDecimal("41.5"),
         message: "must be a decimal",
       },
       bool: {
