@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.1] - 2019-11-22
+### Fixed
+- Deprecation messages re BigDecimal()
+
 ## [1.2.0] - 2019-11-17
 ### Added
 - Add support for checking that the macro is used through the method `macro_use?`
