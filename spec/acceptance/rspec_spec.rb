@@ -17,8 +17,8 @@ RSpec.describe "Integration with RSpec", type: %i[dry_validation] do
       params do
         required(:username).filled
         required(:first_name)
-        required(:age).filled(:int?)
-        required(:last_name).filled(:str?)
+        required(:age).filled(:integer)
+        required(:last_name).filled(:string)
         optional(:mobile).filled
         optional(:email)
         optional(:decimal_value)

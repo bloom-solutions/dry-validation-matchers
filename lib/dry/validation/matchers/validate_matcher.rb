@@ -1,13 +1,13 @@
 module Dry::Validation::Matchers
   class ValidateMatcher
 
-    DEFAULT_TYPE = :str
+    DEFAULT_TYPE = :string
     TYPE_ERRORS = {
-      str: {
+      string: {
         test_value: "str",
         message: "must be a string",
       },
-      int: {
+      integer: {
         test_value: 43,
         message: "must be an integer",
       },
@@ -111,7 +111,7 @@ module Dry::Validation::Matchers
         check_macro_usage!(schema)
     end
 
-    def filled(type=:str)
+    def filled(type=DEFAULT_TYPE)
       @check_filled = true
       @type = type
       self
