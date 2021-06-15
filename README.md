@@ -1,7 +1,5 @@
 # Dry::Validation::Matchers
 
-[![Build Status](https://travis-ci.org/bloom-solutions/dry-validation-matchers.svg?branch=master)](https://travis-ci.org/bloom-solutions/dry-validation-matchers)
-
 RSpec matchers for [Dry::Validation](dry-rb.org/gems/dry-validation).
 
 ## Installation
@@ -40,8 +38,8 @@ RSpec.describe "Integration with RSpec", type: %i[dry_validation] do
       params do
         required(:username).filled
         required(:first_name)
-        required(:age).filled(:int?)
-        required(:last_name).filled(:str?)
+        required(:age).filled(:integer)
+        required(:last_name).filled(:string)
         optional(:mobile).filled
         optional(:email)
         optional(:decimal_value)

@@ -6,21 +6,21 @@ module Dry::Validation::Matchers
     let(:schema_class) do
       Class.new(Dry::Validation::Contract) do
         params do
-          required(:username).filled(:str?, min_size?: 20)
+          required(:username).filled(:string, min_size?: 20)
           required(:first_name)
-          required(:age).filled(:int?)
-          required(:last_name).filled(:str?)
+          required(:age).filled(:integer)
+          required(:last_name).filled(:string)
           optional(:mobile).filled
           optional(:email)
-          optional(:height).filled(:float?)
-          optional(:weight).filled(:decimal?)
-          optional(:active).filled(:bool?)
-          optional(:born_on).filled(:date?)
-          optional(:dismissed_at).filled(:time?)
-          optional(:born_at).filled(:date_time?)
-          required(:pets).filled(:array?)
-          required(:other).filled(:hash?)
-          optional(:hair_color).filled(:str?, included_in?: %w(blue orange))
+          optional(:height).filled(:float)
+          optional(:weight).filled(:decimal)
+          optional(:active).filled(:bool)
+          optional(:born_on).filled(:date)
+          optional(:dismissed_at).filled(:time)
+          optional(:born_at).filled(:date_time)
+          required(:pets).filled(:array)
+          required(:other).filled(:hash)
+          optional(:hair_color).filled(:string, included_in?: %w(blue orange))
           optional(:address).value(min_size?: 1, max_size?: 10)
         end
 
@@ -83,7 +83,7 @@ module Dry::Validation::Matchers
 
     context "checking `filled` type that is more specific than rule" do
       it "matches" do
-        matcher = described_class.new(:mobile, :optional).filled(:int)
+        matcher = described_class.new(:mobile, :optional).filled(:integer)
         expect(matcher.matches?(schema_class)).to be true
       end
     end
@@ -107,20 +107,20 @@ module Dry::Validation::Matchers
 
     context "checking `filled` type `str`" do
       it "matches" do
-        matcher = described_class.new(:username, :required).filled(:str)
+        matcher = described_class.new(:username, :required).filled(:string)
         expect(matcher.matches?(schema_class)).to be true
 
-        matcher = described_class.new(:age, :required).filled(:str)
+        matcher = described_class.new(:age, :required).filled(:string)
         expect(matcher.matches?(schema_class)).to be false
       end
     end
 
     context "checking `filled` type `int`" do
       it "matches" do
-        matcher = described_class.new(:age, :required).filled(:int)
+        matcher = described_class.new(:age, :required).filled(:integer)
         expect(matcher.matches?(schema_class)).to be true
 
-        matcher = described_class.new(:last_name, :required).filled(:int)
+        matcher = described_class.new(:last_name, :required).filled(:integer)
         expect(matcher.matches?(schema_class)).to be false
       end
     end
@@ -284,9 +284,9 @@ module Dry::Validation::Matchers
 
     describe "#description" do
       it "gives an apt description of passing spec" do
-        matcher = described_class.new(:email, :optional).filled(:str)
+        matcher = described_class.new(:email, :optional).filled(:string)
         expect(matcher.description).
-          to eq "validate for optional `email` (filled with str) exists"
+          to eq "validate for optional `email` (filled with string) exists"
       end
 
       it "gives an apt description of passing macro spec" do
@@ -298,9 +298,9 @@ module Dry::Validation::Matchers
 
     describe "#failure_message" do
       it "gives enough clues to the developer" do
-        matcher = described_class.new(:email, :required).filled(:int)
+        matcher = described_class.new(:email, :required).filled(:integer)
         expect(matcher.failure_message).
-          to eq "be missing validation for required `email` (filled with int)"
+          to eq "be missing validation for required `email` (filled with integer)"
       end
 
       it "gives enough clues to the developer when testing macro" do
